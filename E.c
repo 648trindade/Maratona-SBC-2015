@@ -6,7 +6,7 @@ int main() {
   scanf("%ld %ld",&n,&b);
   dir = n/2;
   
-  //metodo da bissecao. Encontra a volta da espiral em que parou em log2 (n/2) iterações
+  //metodo da bisseção. Encontra a volta da espiral em que parou em log2 (n/2) iterações
   while (1){
     p = (dir+esq)/2;
     pto = 4*(p*n - p*p);
