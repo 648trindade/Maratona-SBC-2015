@@ -10,8 +10,7 @@ if [ $# = 2 ]
         diff $1/$1_$x.sol /tmp/$1_$x.sol
       done
 else
-  echo Uso: bash $0 \<letra\> \<total\> \<numero\>
+  echo Uso: bash $0 \<letra\> \<total\>
   echo \ \ letra \ \ : Letra do problema proposto
   echo \ \ total \ \ : Total de entradas/saidas
-  echo \ \ numero\ \ : Numero do problema no URI Online Judge
 fi
