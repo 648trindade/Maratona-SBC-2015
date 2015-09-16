@@ -1,6 +1,0 @@
-p 2 pto 48 ant 28 esq 1 dir 4
-p 3 pto 60 ant 48 esq 2 dir 4
-b 53 tam 1 p 3 i 7
-3 2 b 53 tam 3 p 3 i 5
-5 2 b 55 tam 3 p 3 i 5
--49 3

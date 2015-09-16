@@ -1,6 +1,15 @@
 # Maratona-SBC-2015
 Soluções de alguns problemas da Maratona de Programação SBC - ICPC do ano de 2015
 
+#### Instruções para execução:
+    $ bash roda.sh X N
+
+Onde:
+
+**X** é a letra do problema;
+
+**N** é a quantia de entradas a ser testada;
+
                                                            `                    
                   `-::`                                  `:/:`                  
                   :////-`                              .://///-`                
