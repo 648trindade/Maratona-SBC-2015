@@ -33,4 +33,3 @@ Soluções de alguns problemas da Maratona de Programação SBC - ICPC do ano de
                -://///-`                                `-/////:-`              
                 `.:/:.                                    `-//-`                
                    `                                        ``                  
-
