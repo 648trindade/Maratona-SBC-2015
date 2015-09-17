@@ -10,7 +10,6 @@ typedef struct{
     int out;        // Se já visitado ou não
     int ant;        // Indice do vertice anterior no caminho mais curto
     int dist;       // Distancia da raiz
-    int *path;
 }vert;
 
 typedef struct nodo{
@@ -34,18 +33,14 @@ fila* cria(){
 
 void insert(fila *f, int val){
     no* n;
-    for (n=f->inicio;n!=NULL;n=n->prox)
-        if(n->val==val)
-            return;
     n = malloc(sizeof(no));
     n->val = val;
     n->prox = NULL;
     if (f->size)
         f->fim->prox = n;
-    else{
+    else
         f->inicio = n;
-        f->fim = n;
-    }
+    f->fim = n;
     f->size++;
 }
 
@@ -73,14 +68,23 @@ void le(int *b){ //CAPIROTAGEM!!!
 }
 
 int distancia(vert V[], int x, int y){
-    int i;
-    vert u = V[x], v = V[y];
-    for(i=0; i<u.dist && i<v.dist && u.path[i]==v.path[i]; i++);
-        //printf("i %d u %d v %d igual %d\n",i,u.path[i],v.path[i],u.path[i]==v.path[i]);
-    if((v.dist >= u.dist && V[v.path[i]].val!=u.val) || (v.dist < u.dist && V[u.path[i]].val!=v.val))
-        i--;
-    //printf("%d + %d - %d\n",u.dist,v.dist, 2*i);
-    return u.dist + v.dist - 2*i;
+    int i=0, k, j;
+    k = x; j = y;
+    if (V[x].dist > V[y].dist)
+        for (i=0;i < V[x].dist-V[y].dist; i++)
+            k = V[k].ant;
+    else if (V[y].dist > V[x].dist)
+        for (i=0;i < V[y].dist-V[x].dist; i++)
+            j = V[j].ant;
+    if (k==y || j==x)
+        return i;
+    while(k!=-1){
+        if (k==j)
+            return i;
+        k = V[k].ant;
+        j = V[j].ant;
+        i += 2;
+    }
 }
 
 void djikstra(vert v[]){
@@ -90,25 +94,16 @@ void djikstra(vert v[]){
     int i,j;
     insert(f,0);
     while(!vazia(f)){
-        //printf("Djikstra: Novo Laço\n");
         n = pop(f);
         u = v[n->val];
-        //printf("Djikstra: Analisando v[%d], carta %d vizinhos %d\n",n->val,u.val+1,u.n);
         for(i=0;i<u.n;i++){
             j = u.viz[i];
-            if (!(v[j].out)){
-                //printf("Djikstra: Analisando vizinho %d\n",i);
-                //printf("Djikstra: Distancia atual: %d nova: %d\n",u.dist+1, v[j].dist);
+            if (!(v[j].out))
                 if (u.dist + 1 < v[j].dist){
                     v[j].dist = u.dist+1;
                     v[j].ant = n->val;
-                    if(v[j].path!=NULL) free(v[j].path);
-                    v[j].path = malloc(sizeof(int)*v[j].dist);
-                    if(u.path!=NULL) memcpy(v[j].path, u.path, sizeof(int)*u.dist);
-                    v[j].path[u.dist] = n->val;
                     insert(f,j);
                 }
-            }
         }
         v[n->val].out = 1;
         free(n);
@@ -133,19 +128,13 @@ int main(){
         v[i].n = 0;
         v[i].ant = -1;
         v[i].dist = 60000;
-        v[i].path = NULL;
-        //v[i].viz = malloc(n*sizeof(int));
         if (mat[v[i].val][0]==-1)
             mat[v[i].val][0] = i;
         else
             mat[v[i].val][1] = i;
     }
     v[0].dist = 0;
-    /*for (i=0;i<n/2;i++){
-        printf("%d %d\n",mat[i][0]+1,mat[i][1]+1);
-    }*/
     for (i=0;i<n-1;i++){
-        //scanf("%d %d",&a,&b);
         le(&a);
         le(&b);
         a--;
@@ -158,25 +147,12 @@ int main(){
         v[b].viz[v[b].n-1] = a;
     }
     djikstra(v);
-    int j;
-    //for(i=0;i<n;i++){
-    //    printf("%d carta %d ant %d dist %d\n",i+1,v[i].val+1,v[i].ant+1,v[i].dist);
-        //for(j=0;j<v[i].dist;j++)
-        //    printf("%d ",v[i].path[j]+1);
-        //printf("\n");
-    //}
-    //printf("\n");
     a = v[mat[v[0].val][1]].dist;
-    //printf("%d\n",a);
-    for(i=(v[0].val)?0:1; i<n/2;i += 2-(i+1!=v[0].val)){
+    for(i=(v[0].val)?0:1; i<n/2;i += 2-(i+1!=v[0].val))
         a += distancia(v,mat[i][0],mat[i][1]);
-        //printf("%d\n",a);
-    }
     printf("%d\n",a);
-    for(i=0;i<n/2;i++){
+    for(i=0;i<n/2;i++)
         free(v[i].viz);
-        if(i)   free(v[i].path);
-    }
     return 0;
 }
 
