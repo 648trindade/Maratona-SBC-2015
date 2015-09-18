@@ -2,13 +2,10 @@
 #include <string.h>
 
 int main(){
-	int n,k,i,h,aux=0,aux2;
+	int n,k,i,h,aux2;
 	scanf("%d %d",&n,&k);
 	int j[n][k];
-	int iii[k],ppp[k];
 	int par[2][k],impar[k];
-	memset(iii,0,k*sizeof(int));
-	memset(ppp,0,k*sizeof(int));
 	memset(par[0],0,k*sizeof(int));
 	memset(par[1],0,k*sizeof(int));
 	for(i=0;i<n;i++){
@@ -20,13 +17,11 @@ int main(){
 				if (!par[0][h]){
 					par[0][h] = 1;
 					impar[h] = 1;
-					iii[h]--;
 				}
 				aux2++;
-				iii[h]++;
 			}
 			else
-				par[1][h] = 1, ppp[h]++;
+				par[1][h] = 1;
 		}
 		if (aux2==k){
 			//printf("coco gold %d\n",i);
@@ -35,10 +30,6 @@ int main(){
 					par[0][h] = 0;
 		}
 	}
-	for(i=1;i<k;i++)
-		iii[0] += iii[i], ppp[0] += ppp[i];
-		//printf("Coluna %d par %d impar %d total %d\n",i+1,ppp[i],iii[i],ppp[i]+iii[i]);
-	printf("i %d p %d\n",iii[0],ppp[0]);
 	if(n>k){
 		for(i=0;i<k;i++){
 			if(par[0][i]+par[1][i]<2){
